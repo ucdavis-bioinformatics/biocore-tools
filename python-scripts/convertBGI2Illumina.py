@@ -9,7 +9,7 @@ import time
 from subprocess import Popen, PIPE, STDOUT
 import string
 import re
-import copy
+import os
 
 
 def sp_gzip_read(file, bufsize=-1):
@@ -23,6 +23,19 @@ def sp_gzip_write(file, bufsize=-1):
     return p.stdin
 
 rcs = string.maketrans('TAGCtagc', 'ATCGATCG')
+
+
+def make_sure_path_exists(path):
+    """
+    Try and create a path, if not error
+    """
+    if path != '':
+        try:
+            os.makedirs(os.path.realpath(path))
+        except OSError as exception:
+            if exception.errno != errno.EEXIST:
+                raise
+    return path
 
 
 def revcomp(seq):
@@ -147,6 +160,7 @@ parser.add_option('--quite', help="turn off verbose output",
 (options, args) = parser.parse_args()
 
 output_dir = options.output_dir
+make_sure_path_exists(os.path.dirname(output_prefix))
 
 infile1 = options.read1
 if infile1 is None:
