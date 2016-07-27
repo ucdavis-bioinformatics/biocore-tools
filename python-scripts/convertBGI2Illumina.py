@@ -160,7 +160,7 @@ parser.add_option('--quite', help="turn off verbose output",
 (options, args) = parser.parse_args()
 
 output_dir = options.output_dir
-make_sure_path_exists(os.path.dirname(output_prefix))
+make_sure_path_exists(os.path.dirname(output_dir))
 
 infile1 = options.read1
 if infile1 is None:
